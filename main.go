@@ -1,7 +1,7 @@
 package main
 
 import (
-	"golang/ws/ws"
+	"github.com/sadcomm/ws"
 )
 
 func main() {
