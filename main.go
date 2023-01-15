@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	ws.StartServer();
+	ws.SetupRoutes();
 }
