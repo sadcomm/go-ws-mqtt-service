@@ -1,46 +1,49 @@
 package ws
 
 import (
-	"log"
-	"net/http"
-	"strings"
+    "log"
+    "net/http"
+    "strings"
 
-	"github.com/gorilla/websocket"
+    "github.com/gorilla/websocket"
 )
 
-var upgrader = websocket.Upgrader{}
+var upgrader = websocket.Upgrader{
+    CheckOrigin: func(r *http.Request) bool { 
+        return true 
+    },
+}
 var todoList []string
 
 func getCmd(input string) string {
-	inputArr := strings.Split(input, " ")
-	return inputArr[0]
+    inputArr := strings.Split(input, " ")
+    return inputArr[0]
 }
 
 func getMessage(input string) string {
-	inputArr := strings.Split(input, " ")
-	var result string
-	for i := 1; i < len(inputArr); i++ {
+    inputArr := strings.Split(input, " ")
+    var result string
+    for i := 1; i < len(inputArr); i++ {
         result += inputArr[i]
-	}
-	return result
+    }
+    return result
 }
 
 func updateTodoList(input string) {
-	tmpList := todoList
-	todoList = []string{}
-	for _, val := range tmpList {
+    tmpList := todoList
+    todoList = []string{}
+    for _, val := range tmpList {
         if val == input {
             continue
         }
         todoList = append(todoList, val)
-	}
+    }
 }
 
-func InitEndpoints() {
-	upgrader.CheckOrigin = func(r *http.Request) bool { return true }
-	http.HandleFunc("/todo", func(w http.ResponseWriter, r *http.Request) {
-		// Upgrade upgrades the HTTP server connection to the WebSocket protocol.
-		conn, err := upgrader.Upgrade(w, r, nil)
+func StartServer() {
+    http.HandleFunc("/todo", func(w http.ResponseWriter, r *http.Request) {
+        // Upgrade upgrades the HTTP server connection to the WebSocket protocol.
+        conn, err := upgrader.Upgrade(w, r, nil)
         if err != nil {
             log.Print("upgrade failed: ", err)
             return
@@ -74,11 +77,11 @@ func InitEndpoints() {
                 break
             }
         }
-	})
+    })
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        http.ServeFile(w, r, "websockets.html")
-	})
+    http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+        http.ServeFile(w, r, "./ui/test/websockets.html")
+    })
 
-	http.ListenAndServe(":8080", nil)
+    http.ListenAndServe(":8080", nil)
 }

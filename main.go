@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	ws.InitEndpoints();
+	ws.StartServer();
 }
