@@ -36,7 +36,7 @@ func sub(client mqtt.Client) {
 	fmt.Printf("Subscribed to topic: %s", topic)
 }
 
-func main() {
+func SetupMqttClient() {
 	var broker = "45.153.231.101"
 	var port = 1883
 	opts := mqtt.NewClientOptions()
@@ -55,5 +55,5 @@ func main() {
 	sub(client)
 	publish(client)
 
-	client.Disconnect(250)
+	// client.Disconnect(250)
 }

@@ -15,7 +15,7 @@ var upgrader = websocket.Upgrader{
 
 
 func wsEndpoint(w http.ResponseWriter, r *http.Request) {
-    // Upgrade upgrades the HTTP server connection to the WebSocket protocol.
+    // Upgrade upgrades the HTTP server connection   to the WebSocket protocol.
     conn, err := upgrader.Upgrade(w, r, nil)
     if err != nil {
         log.Print("upgrade failed: ", err)
